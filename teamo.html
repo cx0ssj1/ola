@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/gengar.jpg">
+    <title>Constelación</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+        
+        .star:nth-child(odd) {
+            animation-delay: 1s;
+        }
+        
+        .star:nth-child(3n) {
+            animation-delay: 2s;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { 
+                opacity: 0.3; 
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2);
+            }
+        }
+        
+        .constellation-container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .main-title {
+            text-align: center;
+            color: white;
+            margin: 40px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .main-title h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .main-title p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .song-star {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+            pointer-events: all;
+        }
+        
+        .song-star:hover {
+            transform: scale(1.5);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
+        }
+        
+        .song-star i {
+            color: white;
+            font-size: 10px;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+            border: none;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .modal-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .modal-body {
+            color: white;
+        }
+        
+        .lyric-quote {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #ffd93d;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+        
+        .personal-message {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 300;
+        }
+        
+        .btn-close {
+            filter: invert(1);
+        }
+        
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .heart {
+            position: absolute;
+            color: rgba(255, 107, 107, 0.3);
+            font-size: 20px;
+            animation: float-up 8s infinite linear;
+        }
+        
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg);
+            }
+        }
+        
+        .instructions {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            text-align: center;
+            z-index: 4;
+            backdrop-filter: blur(10px);
+        }
+        
+        @media (max-width: 768px) {
+            .main-title h1 {
+                font-size: 2rem;
+            }
+            
+            .main-title p {
+                font-size: 1rem;
+            }
+            
+            .song-star {
+                width: 25px;
+                height: 25px;
+            }
+            
+            .song-star i {
+                font-size: 12px;
+            }
+            
+            .instructions {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Estrellas de fondo -->
+    <div class="stars-container" id="starsContainer"></div>
+    
+    <!-- Corazones flotantes -->
+    <div class="floating-hearts" id="heartsContainer"></div>
+    
+    <div class="constellation-container">
+        <div class="main-title">
+            <h1><i class="fas fa-heart text-danger"></i> Constelación<i class="fas fa-heart text-danger"></i></h1>
+            <p>Cada estrella es una descripcion de lo mucho que t amo</p>
+        </div>
+        
+        <!-- Estrellas de canciones -->
+        <div class="song-star" style="top: 15%; left: 20%;" data-song="Barro" data-artist="Duki">
+            <i class="fas fa-music"></i>
+        </div>
+        
+        <div class="song-star" style="top: 25%; left: 70%;" data-song="Como Si No Importara" data-artist="Emilia y Duki">
+            <i class="fas fa-heart"></i>
+        </div>
+        
+        <div class="song-star" style="top: 40%; left: 15%;" data-song="Ley de Atracción" data-artist="Duki">
+            <i class="fas fa-star"></i>
+        </div>
+        
+        <div class="song-star" style="top: 35%; left: 85%;" data-song="Starboy Remix" data-artist="Zell, Neo Pistea y Duki">
+            <i class="fas fa-bolt"></i>
+        </div>
+        
+        <div class="song-star" style="top: 55%; left: 40%;" data-song="Aleluya Remix" data-artist="Rels B, Duki y Alemán">
+            <i class="fas fa-pray"></i>
+        </div>
+        
+        <div class="song-star" style="top: 45%; left: 60%;" data-song="Si Me Sobrara el Tiempo" data-artist="Duki">
+            <i class="fas fa-clock"></i>
+        </div>
+        
+        <div class="song-star" style="top: 70%; left: 25%;" data-song="Nena Sad Remix RCP" data-artist="TiagoPZK y Duki">
+            <i class="fas fa-moon"></i>
+        </div>
+        
+        <div class="song-star" style="top: 65%; left: 75%;" data-song="Volver a Empezar" data-artist="Asan y Duki">
+            <i class="fas fa-redo"></i>
+        </div>
+        
+        <div class="song-star" style="top: 80%; left: 50%;" data-song="Celosa" data-artist="Duki">
+            <i class="fas fa-fire"></i>
+        </div>
+    </div>
+    
+    <div class="instructions">
+        <i class="fas fa-hand-pointer"></i> Haz clic en las estrellas para descubrir nuestros momentos especiales
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="songModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">
+                        <i class="fas fa-music"></i>
+                        <span id="songTitle"></span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Artista:</strong> <span id="artistName"></span></p>
+                    <div class="lyric-quote" id="lyricQuote">
+                        <!-- Aquí irían las letras inspiradoras (sin copyright) -->
+                    </div>
+                    <div class="personal-message" id="personalMessage">
+                        <!-- Mensaje personal -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Datos de las canciones con mensajes personalizados
+        const songData = {
+            "Barro": {
+                artist: "Duki",
+                personalMessage: "Como esta canción, nuestro amor nació de algo simple y se volvió extraordinario. Cada día contigo es una nueva aventura.",
+                lyrics: `"Que suerte tube de encontrarte,\nHabiendo tantos."`
+            },
+            "Como Si No Importara": {
+                artist: "Emilia y Duki",
+                personalMessage: "Contigo todo fluye naturalmente, como si el tiempo se detuviera cuando estamos juntos.",
+                lyrics: `"Baby me cansé de poner pero,\nToy como para griatro al mundo, que te quiero.\nVivimo de vacaciones y no estamos en enero,\nLlevame de viaje quiero ser tu pasajero."`
+            },
+            "Ley de Atracción": {
+                artist: "Duki",
+                personalMessage: "Creo en la ley de atracción porque te atraje a mi vida, y ahora no puedo imaginarme sin ti.",
+                lyrics: `"Yo soy tu Jordan, Juntos somos los Chicago Bulls."`
+            },
+            "Starboy Remix": {
+                artist: "Zell, Neo Pistea y Duki",
+                personalMessage: "Eres mi estrella brillante, la que ilumina mis días más oscuros y hace que todo tenga sentido.",
+                lyrics: `"Hace cuanto que te dedico canciones,\nConectamos en todas las dimenciones, Tomamos todo y no solo decisiones, \nTe hice un contrato con bases y condiciones."`
+            },
+            "Aleluya Remix": {
+                artist: "Rels B, Alemán y Duki",
+                personalMessage: "Llevo tu recuerdo conmigo a donde sea.",
+                lyrics: `"En mi mochila tengo mi bolsa de porro\ny una foto tuya."`
+            },
+            "Si Me Sobrara el Tiempo": {
+                artist: "Duki",
+                personalMessage: "Si tuviera más tiempo, lo gastaría todo contigo, sin dudarlo.",
+                lyrics: `"Por ti estoy aguantando los disparos, \nMe peleo con tipos malos,Bebo más en ocasiones, Más cuando no estás al lado."`
+            },
+            "Nena Sad Remix": {
+                artist: "Duki, ORO600, Pablo Chill-E y Quevedo",
+                personalMessage: "A pesar de todo, encontramos alegría cuando estamos juntos.",
+                lyrics: `"Si me llamas, nos fugamos, yo soy tu Dios, tu jugador\nMi frío va con tu calor, tu club de fans, el fundador."`
+            },
+            "RCP": {
+                artist: "Tiago PZK y Duki",
+                personalMessage: "A veces el amor también duele, pero vale la pena intentarlo.",
+                lyrics: `"Somos la alianza perfecta, si estamos juntos solo hay beneficios,\nTu paz necesita tener mi desastre para encontrar el equilibrio."`
+            },
+            "Volver a Empezar": {
+                artist: "Asan y Duki",
+                personalMessage: "Siempre voy a querer volver a empezar contigo, sin importar las veces que caigamos.",
+                lyrics: `"Cuando te vas siento que todo alrededor se cae, \nIntenté arreglarlo solo pero no me sale."`
+            },
+            "Celosa": {
+                artist: "Duki",
+                personalMessage: "Incluso en tus enojos, te amo como nunca. Eres única.",
+                lyrics: `"Y aunque me gusta que te ponga' celosa,\nJuro que en este mundo, mami, a ti nadie te compite."`
+            }
+        };
+
+        
+        // Crear estrellas de fondo
+        function createStars() {
+            const container = document.getElementById('starsContainer');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(star);
+            }
+        }
+        
+        // Crear corazones flotantes
+        function createFloatingHearts() {
+            const container = document.getElementById('heartsContainer');
+            
+            // Función para crear un corazón individual
+            function createSingleHeart() {
+                const heart = document.createElement('i');
+                heart.className = 'fas fa-heart heart';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = '0s';
+                heart.style.fontSize = (Math.random() * 15 + 12) + 'px'; // Tamaños más variados
+                
+                // Colores aleatorios para los corazones
+                const colors = [
+                    'rgba(255, 107, 107, 0.4)',
+                    'rgba(255, 182, 193, 0.4)',
+                    'rgba(255, 20, 147, 0.4)',
+                    'rgba(255, 105, 180, 0.4)',
+                    'rgba(255, 69, 0, 0.4)'
+                ];
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Velocidad aleatoria
+                heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
+                }, 10000);
+            }
+            
+            // Crear corazones más frecuentemente
+            setInterval(createSingleHeart, 300); 
+            
+            // Crear varios corazones al inicio
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createSingleHeart, i * 300);
+            }
+        }
+        
+        
+        // Manejar clics en estrellas
+        document.querySelectorAll('.song-star').forEach(star => {
+            star.addEventListener('click', function() {
+                const songName = this.getAttribute('data-song');
+                const artistName = this.getAttribute('data-artist');
+                const data = songData[songName];
+                document.getElementById('lyricQuote').textContent = data.lyrics;
+                
+                document.getElementById('songTitle').textContent = songName;
+                document.getElementById('artistName').textContent = artistName;
+                document.getElementById('personalMessage').textContent = data.personalMessage;
+                
+                // Mostrar modal
+                const modal = new bootstrap.Modal(document.getElementById('songModal'));
+                modal.show();
+            });
+        });
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            createFloatingHearts();
+        });
+    </script>
+</body>
+</html>
